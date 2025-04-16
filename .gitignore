@@ -10,4 +10,3 @@ backend/.env
 backend/uploads
 .env
 dist
-.env.dist

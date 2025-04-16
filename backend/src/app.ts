@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import userRoutes from './routes/user.routes'
-import { errorHandler } from './middlewares/error.middleware'
 import path from 'path'
 
 const app = express()
@@ -20,8 +19,5 @@ app.get('/', (_, res) => {
 
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
-
-// Global error handling middleware
-app.use(errorHandler)
 
 export default app

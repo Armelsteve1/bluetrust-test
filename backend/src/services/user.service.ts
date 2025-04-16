@@ -11,15 +11,28 @@ export const getAllUsers = async () => {
 }   
 
 export const createUser = async (userData: UserInput) => {
-  try {
-    const user = await prisma.user.create({
-      data: userData,
-    });
-    return user;
-  } catch (error) {
-    throw new Error("Error creating user");
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: { email: userData.email },
+      });
+  
+      if (existingUser) {
+        throw new Error("Email already exists");
+      }
+  
+      const user = await prisma.user.create({
+        data: userData,
+      });
+      return user;
+    } catch (error) {
+      console.error('Error creating user:', error); 
+      if (error instanceof Error) {
+        throw new Error("Error creating user: " + error.message);
+      }
+      throw new Error("Error creating user: An unknown error occurred");
+    }
   }
-}
+  
 
 export const updateUser = async (userId: string, userData: UserInput) => {
   try {
